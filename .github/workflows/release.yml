@@ -2,11 +2,15 @@ name: Release plugin
 
 on:
   push:
-    tags:
-      - '[0-9]*'
+    branches:
+      - main
 
 permissions:
   contents: write
+
+concurrency:
+  group: plugin-release
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -20,12 +24,12 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Check release version
+      - name: Read release version
         shell: bash
         run: |
           version="$(sed -n 's/^version=//p' gradle.properties | tr -d '\r' | head -n 1)"
-          if [[ -z "$version" || "$version" != "$GITHUB_REF_NAME" ]]; then
-            echo "::error::Tag must match the version in gradle.properties (found '$version')."
+          if [[ -z "$version" ]]; then
+            echo "::error::No version found in gradle.properties."
             exit 1
           fi
           echo "VERSION=$version" >> "$GITHUB_ENV"
@@ -43,4 +47,14 @@ jobs:
         run: |
           zip="build/distributions/WTT-RiderIDHighlighter-${VERSION}.zip"
           test -f "$zip"
-          gh release create "$VERSION" "$zip" --title "$VERSION" --notes "" --verify-tag
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "Release $VERSION already exists; skipping."
+            exit 0
+          fi
+          if git fetch --quiet origin "refs/tags/$VERSION:refs/tags/$VERSION" 2>/dev/null; then
+            if [[ "$(git rev-list -n 1 "$VERSION")" != "$GITHUB_SHA" ]]; then
+              echo "::error::Tag $VERSION already points to a different commit."
+              exit 1
+            fi
+          fi
+          gh release create "$VERSION" "$zip" --title "$VERSION" --notes "" --target "$GITHUB_SHA"

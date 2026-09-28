@@ -73,7 +73,7 @@ The default SDK is IntelliJ IDEA 2025.3.6.1, with only Platform and JSON depende
 .\gradlew.bat test buildPlugin verifyPluginStructure
 ```
 
-To publish a GitHub release, push a tag that exactly matches `version` in `gradle.properties` (for example, `1.0.0`). The release workflow tests and packages the plugin, then creates a release with that tag and name, an empty description, and the plugin ZIP as its uploaded asset. Existing releases are not overwritten.
+Every push to `main` runs the release workflow. It tests and packages the plugin, then creates a release using `version` in `gradle.properties` as both the tag and release name, with an empty description and the plugin ZIP as its uploaded asset. If that version already has a release, the workflow leaves it unchanged; a new release requires a new version.
 
 To launch a separate development sandbox using an installed Rider:
 
