@@ -1,0 +1,46 @@
+name: Release plugin
+
+on:
+  push:
+    tags:
+      - '[0-9]*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Check release version
+        shell: bash
+        run: |
+          version="$(sed -n 's/^version=//p' gradle.properties | tr -d '\r' | head -n 1)"
+          if [[ -z "$version" || "$version" != "$GITHUB_REF_NAME" ]]; then
+            echo "::error::Tag must match the version in gradle.properties (found '$version')."
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Build and package plugin
+        shell: bash
+        run: |
+          chmod +x ./gradlew
+          ./gradlew test buildPlugin verifyPluginStructure
+
+      - name: Publish release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          zip="build/distributions/WTT-RiderIDHighlighter-${VERSION}.zip"
+          test -f "$zip"
+          gh release create "$VERSION" "$zip" --title "$VERSION" --notes "" --verify-tag

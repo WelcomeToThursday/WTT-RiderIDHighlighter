@@ -1,0 +1,2 @@
+# Store every file directly in Git. Do not use Git LFS in this repository.
+* -filter

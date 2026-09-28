@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.wtt.rideridhighlighter.RiderBuildRefreshActivity"/>
+    </extensions>
+</idea-plugin>

@@ -1,0 +1,48 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>ca.bushtail.SPTIDHighlighter</id>
+
+    <!-- Public plugin name should be written in Title Case.
+     Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
+    <name>WTT ID Highlighter</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor>bushtail</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
+    <description><![CDATA[
+        Highlights SPT IDs in JSON and JSONC and displays item, handbook, quest, and trader names as inline hints and on hover.
+        Includes SPT 4.1 names; no configuration required. Non-item names include their type.
+        Automatically resolves WTT CommonLib item and quest definitions, trader bases, and locale names in the open project.
+        Optionally select your own database under Settings &gt; Tools &gt; WTT ID Highlighter.
+        ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
+    <depends optional="true" config-file="rider.xml">com.intellij.modules.rider</depends>
+
+
+    <!-- Extensions defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.wtt.rideridhighlighter.WttProjectStartupActivity"/>
+        <!-- JetBrains maps .json and .jsonc to the same JSON language. -->
+        <annotator language="JSON" implementationClass="com.wtt.rideridhighlighter.WttIdAnnotator"/>
+        <fileBasedIndex implementation="com.wtt.rideridhighlighter.WttItemNameIndex"/>
+        <codeInsight.declarativeInlayProvider
+                language="JSON" providerId="spt.json.item.names" isEnabledByDefault="true"
+                group="OTHER_GROUP" implementationClass="com.wtt.rideridhighlighter.WttItemNameHintsProvider"
+                bundle="messages.WttBundle" nameKey="inlay.item.names.name" descriptionKey="inlay.item.names.description"/>
+        <colorSettingsPage implementation="com.wtt.rideridhighlighter.WttColorSettingsPage"/>
+        <additionalTextAttributes scheme="Default" file="colorSchemes/WttIdDefaults.xml"/>
+        <additionalTextAttributes scheme="Darcula" file="colorSchemes/WttIdDefaults.xml"/>
+        <projectConfigurable parentId="tools" id="com.wtt.rideridhighlighter.settings"
+                             displayName="WTT ID Highlighter"
+                             instance="com.wtt.rideridhighlighter.WttSettingsConfigurable"/>
+    </extensions>
+
+</idea-plugin>

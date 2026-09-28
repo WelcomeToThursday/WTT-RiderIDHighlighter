@@ -1,0 +1,15 @@
+{
+  // IDs in comments are not highlighted: "5448be9a4bdc2dfd2f8b456a"
+  "items": [
+    {
+      "_id": "000000000000000000000001",
+      /* Hover over this template ID to see RGD-5 hand grenade. */
+      "_tpl": "5448be9a4bdc2dfd2f8b456a",
+      /* Handbook categories also get name hints, such as "Assault carbines". */
+      "handbookParentId": "5b5f78e986f77447ed5636b1",
+    },
+  ],
+  "byTemplate": {
+    "5448be9a4bdc2dfd2f8b456a": 1,
+  },
+}
