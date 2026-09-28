@@ -16,6 +16,7 @@ A JSON and JSONC ID highlighter for JetBrains Rider and IntelliJ IDEA 2025.3 or 
 - Caches resolved project names and missing IDs in an 8,192-entry per-project LRU cache, separated by locale and same-file overrides. Repeated references reuse their results without querying Rider's index again. Edits, file changes, project-root changes, and indexing transitions invalidate the cache; database definitions are precomputed once per load.
 - Opening a project or finishing a build queries the project index in the background and warms the name cache. Refresh requests are coalesced, wait for indexing to finish, and never launch a build or trigger themselves from hint updates.
 - Lets you customize ID colors under **Settings > Editor > Color Scheme > WTT IDs**.
+- Generates a new MongoDB ObjectId at the editor caret (or replaces a selection) through **Generate MongoID** in the editor right-click menu. The default shortcut is **Ctrl+Alt+Shift+M** on Windows/Linux or **⌘+⌥+⇧+M** on macOS. Each caret gets a distinct ID.
 - Inline names are enabled by default. Toggle **WTT names** under **Settings > Editor > Inlay Hints**. Hints use the editor's hint styling and always appear at the end of the line, after all JSON punctuation and comments. Multiple IDs on one line show their names in source order. Hints never become part of the JSON text.
 
 ## Install and configure

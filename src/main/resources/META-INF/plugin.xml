@@ -45,4 +45,15 @@
                              instance="com.wtt.rideridhighlighter.WttSettingsConfigurable"/>
     </extensions>
 
+    <actions>
+        <action id="com.wtt.rideridhighlighter.GenerateMongoId"
+                class="com.wtt.rideridhighlighter.WttGenerateMongoIdAction"
+                text="Generate MongoID"
+                description="Insert a new MongoDB ObjectId at the caret or replace selected text">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt shift M"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt shift M" replace-all="true"/>
+        </action>
+    </actions>
+
 </idea-plugin>
