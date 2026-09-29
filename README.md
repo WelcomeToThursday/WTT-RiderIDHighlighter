@@ -36,6 +36,8 @@ A local database must contain `templates/items.json` and `locales/global/<locale
 
 Bundled locale codes: `ch`, `cz`, `en`, `es-mx`, `es`, `fr`, `ge`, `hu`, `it`, `jp`, `kr`, `pl`, `po`, `ro`, `ru`, `sk`, `tu` (SPT's own codes). The bundle contains only ID/name/type lookups, not profiles or the full game database. It is a static snapshot; use a local override for newer or exported modded definitions. Local databases can also supply `templates/quests.json` and `traders/*/base.json` with translated names from the global locale files.
 
+The bundled SPT-derived lookup data is distributed under **CC BY-NC-SA 4.0**. See [NOTICE.md](NOTICE.md) for source attribution, the changes made to the snapshot, and the packaged license text. This data notice is separate from the plugin source code.
+
 Use **Reload database** after changing database files. Loading never edits the SPT database. Items injected only into a running server's memory are not available unless exported into the selected database. The database path and locale are saved in the project workspace settings.
 
 This first version supports JSON and JSONC. Try `examples/wtt-items.jsonc` for a commented example. C# support will require the Rider/ReSharper backend. Matching uses complete, unescaped hexadecimal strings, not ID substrings embedded in prose.
